@@ -5,34 +5,39 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @ResponseBody
-@RequestMapping("form")
+@RequestMapping("hello")
 public class HelloController {
-    public String name;
 
-    public String getName() {
-        return name;
+
+    @RequestMapping(value="", method = RequestMethod.POST)
+    @ResponseBody
+    public static String createMessage(@RequestParam String name, @RequestParam String language) {
+        String greeting = "";
+
+        if (name == null) {
+            return "World";
+        } else if (language.equals("English")) {
+            greeting = "Hello,";
+        } else if (language.equals("Spanish")) {
+            greeting = "Hola,";
+        } else if (language.equals("French")) {
+            greeting = "Bonjour,";
+        } else if (language.equals("Italian")) {
+            greeting = "Bungiorno,";
+        } else if (language.equals("German")) {
+            greeting = "Hallo,";
+        }
+        return greeting + " " + name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String language;
-
+    @RequestMapping(value="form", method= RequestMethod.GET)
+    @ResponseBody
     public String helloForm() {
         return "<html>" +
                 "<body>" +
                 "<form action='hello' method='post'>" + //submit a request to hello
                 "<input type='text' name='name'>" +
-                "</form>" +
                 "<form action='lang' method='post'>" +
                 "<select name ='language' id='lang-select'>" +
                 "<option value=''>--Please choose a language--</option>" +
@@ -46,9 +51,5 @@ public class HelloController {
                 "</form>" +
                 "</body>" +
                 "</html>";
-    }
-@RequestMapping
-    public static String createMessage (String name, String language) {
-        return language + ", " + name;
     }
 }
